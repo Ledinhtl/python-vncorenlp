@@ -22,10 +22,10 @@ A Python wrapper for [VnCoreNLP](https://github.com/vncorenlp/VnCoreNLP) using a
 
 ## Installation
 
-You can install this package from PyPI using [pip](http://www.pip-installer.org):
+You can install this package from github.com using [pip](http://www.pip-installer.org):
 
 ```
-$ [sudo] pip install vncorenlp
+$ [sudo] pip install git+https://github.com/Ledinhtl/python-vncorenlp
 ```
 
 For Windows users, please ensure that you run the `Command Prompt` with **admin** privileges.
@@ -54,6 +54,7 @@ def simple_usage():
     # Use "with ... as" to close the server automatically
     with VnCoreNLP(vncorenlp_file) as vncorenlp:
         print('Tokenizing:', vncorenlp.tokenize(sentences))
+        print('Sentences Tokenizing:', vncorenlp.sent_tokenize_with_line_break(sentences))
         print('POS Tagging:', vncorenlp.pos_tag(sentences))
         print('Named-Entity Recognizing:', vncorenlp.ner(sentences))
         print('Dependency Parsing:', vncorenlp.dep_parse(sentences))
@@ -64,6 +65,7 @@ def simple_usage():
     vncorenlp = VnCoreNLP(vncorenlp_file)
 
     print('Tokenizing:', vncorenlp.tokenize(sentences))
+    print('Sentences Tokenizing:', vncorenlp.sent_tokenize_with_line_break(sentences))
     print('POS Tagging:', vncorenlp.pos_tag(sentences))
     print('Named-Entity Recognizing:', vncorenlp.ner(sentences))
     print('Dependency Parsing:', vncorenlp.dep_parse(sentences))
@@ -86,7 +88,12 @@ Tokenizing:
     ['VTV', 'đồng_ý', 'chia_sẻ', 'bản_quyền', 'World_Cup', '2018', 'cho', 'HTV', 'để', 'khai_thác', '.'],
     ['Nhưng', 'cả', 'hai', 'nhà', 'đài', 'đều', 'phải', 'chờ', 'sự', 'đồng_ý', 'của', 'FIFA', 'mới', 'thực_hiện', 'được', 'điều', 'này', '.']
 ]
- 
+
+Sentences Tokenizing: 
+[
+    'VTV đồng ý chia sẻ bản quyền World Cup 2018 cho HTV để khai thác .',
+    'Nhưng cả hai nhà đài đều phải chờ sự đồng ý của FIFA mới thực hiện được điều này .'
+]
  
 POS Tagging:
 [
@@ -357,8 +364,6 @@ Language: vi
 
 ## Use An Existing Server
 
-**I highly recommend you to use this approach to save your time when you are debugging your code.**
-
 First, you need to start the VnCoreNLPServer using this command:
 
 ```
@@ -413,6 +418,7 @@ def simple_usage():
 
     with vncorenlp:
         print('Tokenizing:', vncorenlp.tokenize(sentences))
+        print('Sentences Tokenizing:', vncorenlp.sent_tokenize_with_line_break(sentences))
         print('POS Tagging:', vncorenlp.pos_tag(sentences))
         print('Named-Entity Recognizing:', vncorenlp.ner(sentences))
         print('Dependency Parsing:', vncorenlp.dep_parse(sentences))
@@ -434,6 +440,7 @@ def simple_usage():
     logger.addHandler(ch)
 
     print('Tokenizing:', vncorenlp.tokenize(sentences))
+    print('Sentences Tokenizing:', vncorenlp.sent_tokenize_with_line_break(sentences))
     print('POS Tagging:', vncorenlp.pos_tag(sentences))
     print('Named-Entity Recognizing:', vncorenlp.ner(sentences))
     print('Dependency Parsing:', vncorenlp.dep_parse(sentences))
@@ -469,6 +476,10 @@ def simple_usage():
     # Use only word segmentation
     with VnCoreNLP(vncorenlp_file, annotators="wseg") as vncorenlp:
         print('Tokenizing:', vncorenlp.tokenize(sentences))
+
+    # Use only sentence segmentation
+    with VnCoreNLP(vncorenlp_file, annotators="wseg") as vncorenlp:
+        print('Sentences Tokenizing:', vncorenlp.sent_tokenize_with_line_break(sentences))
 
     # Specify the maximum heap size
     with VnCoreNLP(vncorenlp_file, annotators="wseg", max_heap_size='-Xmx4g') as vncorenlp:

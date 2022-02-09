@@ -129,6 +129,21 @@ class VnCoreNLP(object):
         del response['status']
         return response
 
+    def sent_tokenize_with_line_break(self, s: str):
+        s = s.split('\n')
+        s = list(filter(None, s))
+        sents = []
+        for p in s:
+            for sent in self.tokenize(p):
+                sents.append(' '.join(sent).replace('_', ' '))                
+        # fix exceptions:
+        # ... " - 
+        for i, sent in enumerate(sents):
+            if sent.endswith('...') and sents[i + 1].startswith('" - '):
+                sents[i] = sent + sents[i + 1]
+                sents.pop(i + 1)
+        return sents
+
     def tokenize(self, text):
         sentences = self.annotate(text, annotators='wseg')['sentences']
         return [[w['form'] for w in s] for s in sentences]
